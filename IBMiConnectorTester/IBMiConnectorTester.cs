@@ -47,7 +47,5 @@ namespace IBMiConnectorTester
             foreach (string user in users)
                 Debug.WriteLine(user);
         }
-
-
     }
 }

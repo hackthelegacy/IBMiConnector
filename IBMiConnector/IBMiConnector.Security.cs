@@ -20,6 +20,7 @@
 
 namespace IBMiConnector
 {
+    using System;
     using System.Diagnostics;
 
     /// <content>
@@ -129,76 +130,6 @@ namespace IBMiConnector
                 default:
                     return Converters.BigEndianToHexString(qsyrupwdCallParameters[0].ParameterValue, 1, 8);
             }
-        }
-
-        public string[] GetUsersList()
-        {
-            /*
-             *  https://www.ibm.com/support/knowledgecenter/ssw_ibm_i_72/apis/qgyolaus.htm
-             * 
-             *  Required Parameter Group:
-             *
-             *   1   Receiver variable              Output   Char(*) - 120000B
-             *   2   Length of receiver variable    Input    Binary(4) - 120000
-             *   3   List information               Output   Char(80)  
-             *   4   Number of records to return    Input    Binary(4) - "9999"
-             *   5   Format name                    Input    Char(8) - "AUTU0100"
-             *   6   Selection criteria             Input    Char(10) - "*ALL"
-             *   7   Group profile name             Input    Char(10) - "*NONE"
-             *   8   Error code                     I/O      Char(*)
-             */
-
-            ProgramCallParameters qgyolausCallParameters =
-                new ProgramCallParameters(8)
-                {
-                    [0] = new ProgramCallParameter(
-                        ProgramCallParameter.ParameterTypeOutput,
-                        null,
-                        120000),
-                    [1] = new ProgramCallParameter(
-                        ProgramCallParameter.ParameterTypeInput,
-                        Converters.UInt32ToBigEndian(120000)),
-                    [2] = new ProgramCallParameter(
-                        ProgramCallParameter.ParameterTypeOutput,
-                        null,
-                        80),
-                    [3] = new ProgramCallParameter(
-                        ProgramCallParameter.ParameterTypeInput,
-                        Converters.UInt32ToBigEndian(9999)),
-                    [4] = new ProgramCallParameter(
-                        ProgramCallParameter.ParameterTypeInput,
-                        Converters.AsciiToEbcdic("AUTU0100")),
-                    [5] = new ProgramCallParameter(
-                        ProgramCallParameter.ParameterTypeInput,
-                        Converters.AsciiToEbcdic("*ALL      ")),
-                    [6] = new ProgramCallParameter(
-                        ProgramCallParameter.ParameterTypeInput,
-                        Converters.AsciiToEbcdic("*NONE     ")),
-                    [7] = new ProgramCallParameter(
-                        ProgramCallParameter.ParameterTypeInputOutput,
-                        null,
-                        500)
-                };
-
-            CallMessages qgyolausCallMessages = new CallMessages();
-
-            if (CallProgram("QGYOLAUS", "QSYS", ref qgyolausCallParameters, ref qgyolausCallMessages) != 0)
-            {
-                foreach (CallMessage outputMessage in qgyolausCallMessages)
-                    Debug.WriteLine(outputMessage.MessageText);
-                throw new System.InvalidOperationException("The method GetUserList failed. Check debug information.");
-            }
-
-            uint numEntries = Converters.BigEndianToUInt32(qgyolausCallParameters[2].ParameterValue, 0, 4);
-            if (numEntries <= 0)
-                return null;
-
-            string[] userList = new string[numEntries];
-            for (int i = 0; i < numEntries; i++)
-            {
-                userList[i] = Converters.EbcdicToAsciiString(qgyolausCallParameters[0].ParameterValue, (uint)i * 12, 10);
-            }
-            return userList;
         }
 
         /// <summary>Sets user's password to a specified value</summary>

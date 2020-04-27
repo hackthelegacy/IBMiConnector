@@ -46,6 +46,7 @@
     <Compile Include="IBMiConnector.Connectivity.cs" />
     <Compile Include="IBMiConnector.cs" />
     <Compile Include="IBMiConnector.ProgramCalls.cs" />
+    <Compile Include="IBMiConnector.UserManagement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SocketConnector.cs" />
     <Compile Include="BigEndianMemoryStream.cs" />
