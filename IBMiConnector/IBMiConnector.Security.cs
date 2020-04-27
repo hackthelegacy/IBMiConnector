@@ -200,6 +200,52 @@ namespace IBMiConnector
             }
             return userList;
         }
+
+        /// <summary>Sets user's password to a specified value</summary>
+        /// <param name="userName">User name</param>
+        /// <param name="newPassword">New password to be set</param>
+        /// <param name="currentPassword">User's current password (optional if user is *SECADM and has at least *USE authority to the profile)</param>
+        public void ChangeUserPassword(string userName, string newPassword, string currentPassword = "*CURPWD")
+        {
+            /*
+             *  https://www.ibm.com/support/knowledgecenter/ssw_ibm_i_73/apis/QSYCHGPW.htm
+             * 
+             *  Required Parameter Group:
+             *
+             *   1   User ID		            Input    Char(10)
+             *   2   Current password		    Input    Char(*)
+             *   3   New password	            Input    Char(*)  
+             *   4   Error code                     I/O      Char(*)
+             */
+
+            ProgramCallParameters qsychgpwCallParameters =
+                new ProgramCallParameters(8)
+                {
+                    [0] = new ProgramCallParameter(
+                        ProgramCallParameter.ParameterTypeInput,
+                        Converters.AsciiToEbcdic(userName.ToUpper().PadRight(10))),
+                    [1] = new ProgramCallParameter(
+                        ProgramCallParameter.ParameterTypeInput,
+                        Converters.AsciiToEbcdic(currentPassword)),
+                    [2] = new ProgramCallParameter(
+                        ProgramCallParameter.ParameterTypeInput,
+                        Converters.AsciiToEbcdic(newPassword)),
+                    [3] = new ProgramCallParameter(
+                        ProgramCallParameter.ParameterTypeInputOutput,
+                        null,
+                        500)
+                };
+
+            CallMessages qsychgpwCallMessages = new CallMessages();
+
+            if (CallProgram("qsychgpw", "QSYS", ref qsychgpwCallParameters, ref qsychgpwCallMessages) != 0)
+            {
+                foreach (CallMessage outputMessage in qsychgpwCallMessages)
+                    Debug.WriteLine(outputMessage.MessageText);
+                throw new System.InvalidOperationException("The method ChangeUserPassword failed. Check debug information.");
+            }
+        }
+
         //-----------------------------------------------------------------------
         // Private methods
         //-----------------------------------------------------------------------
