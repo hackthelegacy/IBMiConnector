@@ -331,7 +331,7 @@ namespace IBMiConnector
             outputStream.WriteInt(0); // Correlation ID
             outputStream.WriteShort(0x0001);  // Template length
             outputStream.WriteShort(0x7004);  // ReqReP ID
-            outputStream.WriteByte((byte)(this.passwordLevel < 2 ? 1 : 3)); // Password encryption type
+            outputStream.WriteByte((byte)(this.passwordLevel <= 2 ? 1 : 3)); // Password encryption type
             outputStream.WriteInt(10);  // Client CCSID LL
             outputStream.WriteShort(0x1113); // Client CCSID CP
             outputStream.WriteInt(1200);  // Client CCSID (big endian UTF-16)
