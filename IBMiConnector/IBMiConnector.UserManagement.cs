@@ -351,7 +351,7 @@ namespace IBMiConnector
              */
 
             ProgramCallParameters qsyrusriCallParameters =
-                new ProgramCallParameters(8)
+                new ProgramCallParameters(5)
                 {
                     [0] = new ProgramCallParameter(
                         ProgramCallParameter.ParameterTypeOutput,
