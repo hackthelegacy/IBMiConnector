@@ -183,7 +183,7 @@ namespace IBMiConnector
                 throw new System.InvalidOperationException("Operation failed, connection not established.");
 
             byte[] commandStringBytes;
-
+            
             commandStringBytes = this.serverDatastreamLevel >= 10 ? Encoding.BigEndianUnicode.GetBytes(commandString) : Converters.AsciiToEbcdic(commandString);
 
             BigEndianMemoryStream outputStream = new BigEndianMemoryStream();
@@ -204,11 +204,11 @@ namespace IBMiConnector
 
             outputStream.WriteByte(messageOption);
 
-            if (this.serverDatastreamLevel > 10)
+            if (this.serverDatastreamLevel >= 10)
             {
                 outputStream.WriteInt((uint)(10 + commandStringBytes.Length)); // Command LL
                 outputStream.WriteShort(0x1104); // Command CP
-                outputStream.WriteShort(1200); // Command CCSID
+                outputStream.WriteInt(1200); // Command CCSID
                 outputStream.Write(commandStringBytes, 0, commandStringBytes.Length); // Command
             }
             else

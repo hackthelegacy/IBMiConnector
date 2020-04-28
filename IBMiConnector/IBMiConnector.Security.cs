@@ -146,11 +146,15 @@ namespace IBMiConnector
              *   1   User ID		            Input    Char(10)
              *   2   Current password		    Input    Char(*)
              *   3   New password	            Input    Char(*)  
-             *   4   Error code                     I/O      Char(*)
+             *   4   Error code                 I/O      Char(*)
+             *   5	 Length of current password	Input	 Bin(4)
+             *   6	 CCSID of current password	Input	 Bin(4) -> 0
+             *   7	 Length of new password		Input	 Bin(4)
+             *   8	 CCSID of new password		Input	 Bin(4) -> 0
              */
 
             ProgramCallParameters qsychgpwCallParameters =
-                new ProgramCallParameters(4)
+                new ProgramCallParameters(8)
                 {
                     [0] = new ProgramCallParameter(
                         ProgramCallParameter.ParameterTypeInput,
@@ -164,7 +168,19 @@ namespace IBMiConnector
                     [3] = new ProgramCallParameter(
                         ProgramCallParameter.ParameterTypeInputOutput,
                         null,
-                        500)
+                        500),
+                    [4] = new ProgramCallParameter(
+                        ProgramCallParameter.ParameterTypeInput,
+                        Converters.UInt32ToBigEndian((uint)currentPassword.Length)),
+                    [5] = new ProgramCallParameter(
+                        ProgramCallParameter.ParameterTypeInput,
+                        Converters.UInt32ToBigEndian(0)),
+                    [6] = new ProgramCallParameter(
+                        ProgramCallParameter.ParameterTypeInput,
+                        Converters.UInt32ToBigEndian((uint)newPassword.Length)),
+                    [7] = new ProgramCallParameter(
+                        ProgramCallParameter.ParameterTypeInput,
+                        Converters.UInt32ToBigEndian(0))
                 };
 
             CallMessages qsychgpwCallMessages = new CallMessages();
