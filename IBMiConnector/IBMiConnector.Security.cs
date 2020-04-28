@@ -150,7 +150,7 @@ namespace IBMiConnector
              */
 
             ProgramCallParameters qsychgpwCallParameters =
-                new ProgramCallParameters(8)
+                new ProgramCallParameters(4)
                 {
                     [0] = new ProgramCallParameter(
                         ProgramCallParameter.ParameterTypeInput,
