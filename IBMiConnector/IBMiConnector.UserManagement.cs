@@ -55,6 +55,10 @@ namespace IBMiConnector
 
                 this.UserName = Converters.EbcdicToAsciiString(binaryData, 8, 10).ToUpper();
                 this.AccountingCode = Converters.EbcdicToAsciiString(binaryData, 309, 15).ToUpper();
+                this.LastPasswordChangeDate = Converters.DTSTimeStampToDateTime(binaryData, 46);
+                this.PasswordExpirationDate = Converters.DTSTimeStampToDateTime(binaryData, 60);
+                this.UserExpirationDate = Converters.DTSTimeStampToDateTime(binaryData, 676);
+                this.Status = Converters.EbcdicToAsciiString(binaryData, 36, 10).ToUpper();
                 //TODO: Implementation of other fields
             }
 
