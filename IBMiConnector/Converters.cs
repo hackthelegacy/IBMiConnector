@@ -238,6 +238,21 @@ namespace IBMiConnector
             return AsciiToEbcdic(Encoding.ASCII.GetBytes(value), 0, 0, ccsid);
         }
 
+        /// <summary>Converts an ASCII date time string to DateTime</summary>
+        /// <param name="value">ASCII string to be converted in format: XYYMMDDHHMMSS, where X = century</param>
+        /// <returns>Converted value</returns>
+        public static DateTime TimestampToDateTime(string value)
+        {
+            int year = (value[0] == '0' ? 1900 : 2000) + int.Parse(value.Substring(1, 2));
+            int month = int.Parse(value.Substring(3, 2));
+            int day = int.Parse(value.Substring(5, 2));
+            int hour = int.Parse(value.Substring(7, 2));
+            int minute = int.Parse(value.Substring(9, 2));
+            int second = int.Parse(value.Substring(11, 2));
+            return new DateTime(year, month, day, hour, minute, second);
+        }
+
+
         /// <summary>Converts an unformatted timestamp (DTS) to DateTime.
         /// DTS specify microseconds elapsed since August 23, 1928 12:03:06.314752.</summary>
         /// <param name="value">Byte array with the byte stream to be converted (length of 8 bytes)</param>

@@ -53,12 +53,23 @@ namespace IBMiConnector
                 if (Converters.BigEndianToUInt32(binaryData) > binaryData.Length)
                     throw new System.InvalidOperationException("The received data length is bigger than the buffer size. Exiting.");
 
-                this.UserName = Converters.EbcdicToAsciiString(binaryData, 8, 10).ToUpper();
-                this.AccountingCode = Converters.EbcdicToAsciiString(binaryData, 309, 15).ToUpper();
+                this.UserName = Converters.EbcdicToAsciiString(binaryData, 8, 10).ToUpper().Trim();
+                this.AccountingCode = Converters.EbcdicToAsciiString(binaryData, 309, 15).ToUpper().Trim();
                 this.LastPasswordChangeDate = Converters.DTSTimeStampToDateTime(binaryData, 46);
                 this.PasswordExpirationDate = Converters.DTSTimeStampToDateTime(binaryData, 60);
                 this.UserExpirationDate = Converters.DTSTimeStampToDateTime(binaryData, 676);
-                this.Status = Converters.EbcdicToAsciiString(binaryData, 36, 10).ToUpper();
+                this.Status = Converters.EbcdicToAsciiString(binaryData, 36, 10).ToUpper().Trim();
+                this.LastSignonDateTime = Converters.TimestampToDateTime(Converters.EbcdicToAsciiString(binaryData, 18, 13).ToUpper());
+                this.BlockPasswordChange = Converters.EbcdicToAsciiString(binaryData, 661, 10).ToUpper().Trim();
+                this.Owner = Converters.EbcdicToAsciiString(binaryData, 108, 10).ToUpper().Trim();
+                this.UserClass = Converters.EbcdicToAsciiString(binaryData, 73, 10).ToUpper().Trim();
+                this.GroupAuthority = Converters.EbcdicToAsciiString(binaryData, 118, 10).ToUpper().Trim();
+                this.GroupProfile = Converters.EbcdicToAsciiString(binaryData, 98, 10).ToUpper().Trim();
+                this.SpecialAuthorities = Converters.EbcdicToAsciiString(binaryData, 83, 15).ToUpper().Trim();
+                this.PasswordExpirationInterval = Converters.BigEndianToUInt32(binaryData, 56);
+                this.PasswordExpirationDays = Converters.BigEndianToUInt32(binaryData, 68);
+                this.LastPasswordChangeDate = Converters.DTSTimeStampToDateTime(binaryData, 46);
+                this.PasswordExpirationDate = Converters.DTSTimeStampToDateTime(binaryData, 60);
                 //TODO: Implementation of other fields
             }
 
