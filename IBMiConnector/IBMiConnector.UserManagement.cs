@@ -65,7 +65,17 @@ namespace IBMiConnector
                 this.UserClass = Converters.EbcdicToAsciiString(binaryData, 73, 10).ToUpper().Trim();
                 this.GroupAuthority = Converters.EbcdicToAsciiString(binaryData, 118, 10).ToUpper().Trim();
                 this.GroupProfile = Converters.EbcdicToAsciiString(binaryData, 98, 10).ToUpper().Trim();
-                this.SpecialAuthorities = Converters.EbcdicToAsciiString(binaryData, 83, 15).ToUpper().Trim();
+                string specialAuthorities = Converters.EbcdicToAsciiString(binaryData, 83, 15).ToUpper().Trim();
+
+                this.SpecialAuthorities = (specialAuthorities[0] == '1' ? "*ALLOBJ " : "") +
+                                          (specialAuthorities[1] == '1' ? "*SECADM " : "") +
+                                          (specialAuthorities[2] == '1' ? "*JOBCTL " : "") +
+                                          (specialAuthorities[3] == '1' ? "*SPLCTL " : "") +
+                                          (specialAuthorities[4] == '1' ? "*SAVSYS " : "") +
+                                          (specialAuthorities[5] == '1' ? "*SERVICE " : "") +
+                                          (specialAuthorities[6] == '1' ? "*AUDIT " : "") +
+                                          (specialAuthorities[7] == '1' ? "*IOSYSCFG" : "");
+
                 this.PasswordExpirationInterval = Converters.BigEndianToUInt32(binaryData, 56);
                 this.PasswordExpirationDays = Converters.BigEndianToUInt32(binaryData, 68);
                 this.LastPasswordChangeDate = Converters.DTSTimeStampToDateTime(binaryData, 46);
