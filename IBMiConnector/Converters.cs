@@ -22,7 +22,9 @@ namespace IBMiConnector
 {
     using System;
     using System.Diagnostics;
+    using System.Linq;
     using System.Text;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Class Converters delivers utilities to convert between IBM and non-IBM data formats.
@@ -243,7 +245,7 @@ namespace IBMiConnector
         /// <returns>Converted value</returns>
         public static DateTime TimestampToDateTime(string value)
         {
-            if (value.Length != 13)
+            if (value.Length != 13 || !value.All(Char.IsDigit))
                 return default(DateTime);
 
             int year = (value[0] == '0' ? 1900 : 2000) + int.Parse(value.Substring(1, 2));

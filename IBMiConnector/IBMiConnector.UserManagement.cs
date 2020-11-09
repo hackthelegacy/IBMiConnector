@@ -59,7 +59,7 @@ namespace IBMiConnector
                 this.PasswordExpirationDate = Converters.DTSTimeStampToDateTime(binaryData, 60);
                 this.UserExpirationDate = Converters.DTSTimeStampToDateTime(binaryData, 676);
                 this.Status = Converters.EbcdicToAsciiString(binaryData, 36, 10).ToUpper().Trim();
-                this.LastSignonDateTime = Converters.TimestampToDateTime(Converters.EbcdicToAsciiString(binaryData, 18, 13).ToUpper());
+                this.LastSignonDateTime = Converters.TimestampToDateTime(Converters.EbcdicToAsciiString(binaryData, 18, 13).ToUpper().Trim());
                 this.BlockPasswordChange = Converters.EbcdicToAsciiString(binaryData, 661, 10).ToUpper().Trim();
                 this.Owner = Converters.EbcdicToAsciiString(binaryData, 108, 10).ToUpper().Trim();
                 this.UserClass = Converters.EbcdicToAsciiString(binaryData, 73, 10).ToUpper().Trim();
