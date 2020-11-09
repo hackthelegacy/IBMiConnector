@@ -243,6 +243,9 @@ namespace IBMiConnector
         /// <returns>Converted value</returns>
         public static DateTime TimestampToDateTime(string value)
         {
+            if (value.Length != 13)
+                return default(DateTime);
+
             int year = (value[0] == '0' ? 1900 : 2000) + int.Parse(value.Substring(1, 2));
             int month = int.Parse(value.Substring(3, 2));
             int day = int.Parse(value.Substring(5, 2));
@@ -284,6 +287,9 @@ namespace IBMiConnector
                 return default(DateTime);
 
             ulong timestampDTS = BigEndianToUInt64(value, offset);
+
+            if (timestampDTS == 0)
+                return default(DateTime);
 
             timestampDTS -= 0x8000000000000000;
             timestampDTS >>= 12;

@@ -65,7 +65,7 @@ namespace IBMiConnector
                 this.UserClass = Converters.EbcdicToAsciiString(binaryData, 73, 10).ToUpper().Trim();
                 this.GroupAuthority = Converters.EbcdicToAsciiString(binaryData, 118, 10).ToUpper().Trim();
                 this.GroupProfile = Converters.EbcdicToAsciiString(binaryData, 98, 10).ToUpper().Trim();
-                string specialAuthorities = Converters.EbcdicToAsciiString(binaryData, 83, 15).ToUpper().Trim();
+                string specialAuthorities = Converters.EbcdicToAsciiString(binaryData, 83, 15).ToUpper().PadRight(8);
 
                 this.SpecialAuthorities = (specialAuthorities[0] == '1' ? "*ALLOBJ " : "") +
                                           (specialAuthorities[1] == '1' ? "*SECADM " : "") +
