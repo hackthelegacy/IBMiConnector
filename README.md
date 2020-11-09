@@ -1,5 +1,5 @@
 # IBMiConnector - a native .NET port of (selected functionalities of) jt400 for interacting with IBM Power Systems (formerly known as AS/400)
-# Copyright (C) 2018-2019  Bart Kulach
+# Copyright (C) 2018-2020  Bart Kulach
 
 "IBMiConnector" is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
